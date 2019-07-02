@@ -2,7 +2,9 @@ import React from "react";
 import { Platform } from "react-native";
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
+  NavigationActions,
+  StackActions
 } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
@@ -10,6 +12,7 @@ import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 // import SettingsScreen from "../screens/SettingsScreen";
 import SpellsScreen from "../screens/SpellsScreen";
+import ItemsScreen from "../screens/ItemsScreen";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -23,10 +26,13 @@ const HomeStack = createStackNavigator(
   config
 );
 
+// const reset = () => console.log("clickered");
+
 HomeStack.navigationOptions = {
   tabBarLabel: "Home",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
+      // onPress={reset}
       focused={focused}
       name={
         Platform.OS === "ios"
@@ -94,10 +100,29 @@ SpellsStack.navigationOptions = {
 };
 SpellsStack.path = "";
 
+const ItemsStack = createStackNavigator(
+  {
+    Items: ItemsScreen
+  },
+  config
+);
+
+ItemsStack.navigationOptions = {
+  tabBarLabel: "Items",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+    />
+  )
+};
+ItemsStack.path = "";
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
-  SpellsStack
+  SpellsStack,
+  ItemsStack
   // SettingsStack
 });
 

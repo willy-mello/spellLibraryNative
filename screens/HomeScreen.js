@@ -11,8 +11,10 @@ import {
   AsyncStorage,
   Button
 } from "react-native";
+import { NavigationActions, StackActions } from "react-navigation";
 import OneSpell from "../components/OneSpell";
 import UserDeck from "../components/UserDeck";
+import UserItems from "../components/UserItems";
 
 import { MonoText } from "../components/StyledText";
 
@@ -21,82 +23,80 @@ export default class HomeScreen extends React.Component {
     super();
     this.state = {
       deck: [],
-      spellList: []
+      itemOpen: false,
+      spellOpen: false,
+      items: []
     };
     this._getSavedSpells = this._getSavedSpells.bind(this);
+    this._getSavedItems = this._getSavedItems.bind(this);
+    this._getAllPossessions = this._getAllPossessions.bind(this);
   }
-  // getRandomSpell = async () => {
-  //   console.log("pressed llama");
-  //   try {
-  //     const res = await fetch("http://dnd5eapi.co/api/spells/1/");
-  //     const spell = await res.json();
-  //     this.setState({
-  //       randomSpell: spell
-  //     });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
+  // reset = () => {
+  //   const resetAction = StackActions.reset({
+  //     index: 0,
+  //     actions: [NavigationActions.navigate({ routeName: "Home" })]
+  //   });
+  //   console.log("reset executed on home screen");
+  //   return this.props.navigation.dispatch(resetAction);
   // };
+  _showSpells = () => this.setState({ spellOpen: !this.state.spellOpen });
+  _showItems = () => this.setState({ itemOpen: !this.state.itemOpen });
   _getSavedSpells = async () => {
     try {
-      // let spellArray = [];
-      let allSpells = await AsyncStorage.getAllKeys();
-      this.setState({ spellList: allSpells, deck: [] });
-
-      if (allSpells.length) {
-        let spellArray = await allSpells.map(async elem => {
-          let oneSpell = await AsyncStorage.getItem(elem);
-
-          this.setState({ deck: [...this.state.deck, JSON.parse(oneSpell)] });
-          console.log("spells array in deck", this.state.deck);
-          return JSON.parse(oneSpell);
-          // spellArray.push(JSON.parse(oneSpell));
-          // console.log("spell array", spellArray);
-        });
-        // this.setState({ deck: spellArray });
-        return spellArray;
-      }
+      let allSpells = await AsyncStorage.getItem("spells");
+      if (allSpells !== null) this.setState({ deck: JSON.parse(allSpells) });
+      return JSON.parse(allSpells);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  _getSavedItems = async () => {
+    try {
+      let allItems = await AsyncStorage.getItem("items");
+      if (allItems !== null) this.setState({ items: JSON.parse(allItems) });
+      return JSON.parse(allItems);
     } catch (error) {
       console.error(error);
     }
   };
   _removeAllSpells = async () => {
     try {
-      await AsyncStorage.clear();
+      await AsyncStorage.removeItem("spells");
       this.setState({ deck: [], spellList: [] });
     } catch (error) {
       console.error(error);
     }
   };
-  _spellCountCorrect = async () => {
+  _removeAllItems = async () => {
     try {
-      let allSpells = await AsyncStorage.getAllKeys();
-
-      return allSpells.length === this.state.deck.length;
+      await AsyncStorage.removeItem("items");
+      this.setState({ items: [] });
     } catch (error) {
       console.error(error);
     }
   };
-
-  componentDidMount = () => {
+  _getAllPossessions = () => {
+    console.log("clciked and stugfgf");
+    this._getSavedItems();
     this._getSavedSpells();
   };
-  componentDidUpdate = (prevProps, prevState) => {
-    if (!this._getSavedSpells.length === prevState.deck.length) {
-      console.log("got to consitional in diduopdate");
-      this.setState({ deck: this._getSavedSpells() });
-    }
+
+  componentDidMount = () => {
+    this._getAllPossessions();
   };
+  componentDidUpdate = async (newProps, prevState) => {};
+
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.getStartedText} />
+        <Text style={styles.getStartedText} />
+        <Text style={styles.getStartedText}>Robby's DnD Pocket Handbook</Text>
+
         <View style={styles.welcomeContainer}>
-          <Text style={styles.getStartedText} />
-          <Text style={styles.getStartedText} />
-          <Text style={styles.getStartedText}>Robby's DnD Pocket Handbook</Text>
           <TouchableOpacity
             style={styles.welcomeContainer}
-            onPress={this._getSavedSpells}
+            onPress={this._getAllPossessions}
           >
             <Image
               source={require("../assets/images/llama.gif")}
@@ -108,20 +108,36 @@ export default class HomeScreen extends React.Component {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.codeHighlightContainer}>
-          <TouchableOpacity onPress={this.componentDidUpdate}>
+
+        <TouchableOpacity onPress={this._showSpells}>
+          <View style={styles.codeHighlightContainerSpells}>
             <Image
               source={require("../assets/images/ducks.gif")}
               style={styles.welcomeImage}
             />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
 
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <UserDeck deck={this.state.deck} />
+          {this.state.spellOpen ? <UserDeck deck={this.state.deck} /> : null}
+          {this.state.deck.length && this.state.spellOpen ? (
+            <Button title="remove all spells" onPress={this._removeAllSpells} />
+          ) : null}
+
+          <TouchableOpacity onPress={this._showItems}>
+            <View style={styles.codeHighlightContainer}>
+              <Image
+                source={require("../assets/images/armour.gif")}
+                style={styles.welcomeImage}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {this.state.itemOpen ? <UserItems items={this.state.items} /> : null}
+
           {/* {this.state.deck.length ? (
             this.state.deck.map((elem, idx) => {
               return <OneSpell key={idx + 1} spell={elem} />;
@@ -129,55 +145,18 @@ export default class HomeScreen extends React.Component {
           ) : (
             <Text>no spells</Text>
           )} */}
-          {this.state.deck.length ? (
-            <Button title="remove all spells" onPress={this._removeAllSpells} />
+          {this.state.items.length && this.state.itemOpen ? (
+            <Button title="remove all items" onPress={this._removeAllItems} />
           ) : null}
-
-          {/* <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
-
-          <Text style={styles.getStartedText}>Get started by opening</Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
-          </View>
-
-          <Text style={styles.getStartedText}>
-            Change this text and your app will automatically reload.
-          </Text>
-        </View> */}
-
-          {/* <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
+          <TouchableOpacity onPress={this._showItems}>
+            <View style={styles.codeHighlightContainerMoney}>
+              <Image
+                source={require("../assets/images/money.gif")}
+                style={styles.welcomeImage}
+              />
+            </View>
           </TouchableOpacity>
-        </View> */}
         </ScrollView>
-
-        <View style={styles.codeHighlightContainer}>
-          <TouchableOpacity>
-            <Image
-              source={require("../assets/images/armour.gif")}
-              style={styles.welcomeImage}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.componentDidUpdate}>
-            <Image
-              source={require("../assets/images/ducks.gif")}
-              style={styles.welcomeImage}
-            />
-          </TouchableOpacity>
-          {/* <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            <MonoText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </MonoText>
-          </View> */}
-        </View>
       </View>
     );
   }
@@ -235,7 +214,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   contentContainer: {
-    paddingTop: 30
+    paddingTop: 0
   },
   welcomeContainer: {
     alignItems: "center",
@@ -261,7 +240,21 @@ const styles = StyleSheet.create({
   },
   codeHighlightContainer: {
     backgroundColor: "#808080",
-    borderRadius: 3,
+    borderRadius: 0,
+    paddingHorizontal: 4,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  codeHighlightContainerSpells: {
+    backgroundColor: "#464643",
+    borderRadius: 0,
+    paddingHorizontal: 4,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  codeHighlightContainerMoney: {
+    backgroundColor: "#D5D5D1",
+    borderRadius: 0,
     paddingHorizontal: 4,
     flexDirection: "row",
     justifyContent: "space-evenly"

@@ -12,7 +12,7 @@ export default (MoreInfo = props => {
       <Text>Material: {spell.material}</Text>
       <Text>Higher Level: {spell.higher_level}</Text>
       <TouchableOpacity onPress={props.onPress}>
-        <Text>LESS</Text>
+        <Text>hide details</Text>
       </TouchableOpacity>
     </View>
   );

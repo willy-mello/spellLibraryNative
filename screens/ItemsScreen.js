@@ -5,9 +5,12 @@ import {
   Image,
   Button,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from "react-native";
-import OneSpell from "../components/OneSpell";
+import { NavigationActions, StackActions } from "react-navigation";
+import OneItem from "../components/OneItem";
+import everyItem from "../assets/data/items.json";
 
 export default class ItemsScreen extends React.Component {
   constructor() {
@@ -18,16 +21,29 @@ export default class ItemsScreen extends React.Component {
   }
   componentDidMount = async () => {
     try {
-      const res = await fetch("http://dnd5eapi.co/api/equiptment/");
+      // this.reset();
+      const res = await fetch("http://dnd5eapi.co/api/equipment/");
+
       const items = await res.json();
+
       this.setState({ allItems: items.results });
     } catch (error) {
       console.error(error);
     }
   };
+
   _saveToAsyncStorage = async obj => {
     try {
-      await AsyncStorage.setItem(`${obj.name}`, JSON.stringify(obj));
+      let req = await AsyncStorage.getItem("items");
+      let itemsList = [];
+      if (req !== null) {
+        let itemsList = JSON.parse(req);
+        itemsList.push(obj);
+        await AsyncStorage.setItem(`items`, JSON.stringify(itemsList));
+      } else {
+        itemsList.push(obj);
+        await AsyncStorage.setItem(`items`, JSON.stringify(itemsList));
+      }
     } catch (error) {
       console.error(error);
     }
@@ -38,18 +54,16 @@ export default class ItemsScreen extends React.Component {
     return (
       <ScrollView style={styles.container}>
         {this.state.allItems.length ? (
-          Items.map((elem, idx) => {
+          items.map((elem, idx) => {
             return (
               <View key={idx + 1} style={styles.oneSpell}>
-                <OneSpell spell={elem} />
-                <Button
-                  onPress={() => this._saveToAsyncStorage(elem)}
-                  style={styles.addButton}
-                  title="ADD +"
-                >
-                  {" "}
-                  Add +{" "}
-                </Button>
+                <OneItem item={elem} />
+                <TouchableOpacity style={styles.addButton}>
+                  <Image
+                    source={require("../assets/images/addSpell.gif")}
+                    style={styles.welcomeImage}
+                  />
+                </TouchableOpacity>
               </View>
             );
           })
@@ -74,20 +88,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
+    width: 80,
+    height: 45,
     resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10,
-    backgroundColor: "#080808"
+
+    backgroundColor: "#DEB887"
   },
   addButton: {
-    width: "2vw",
+    width: 100,
+    alignItems: "center",
     borderStyle: "solid",
-    borderWidth: 10,
-    borderRadius: 50,
-    borderColor: "#696969",
-    backgroundColor: "#696969"
+    borderWidth: 2,
+    backgroundColor: "#DEB887",
+    borderColor: "brown",
+    width: 100
   },
   oneSpell: {
     flexDirection: "row",

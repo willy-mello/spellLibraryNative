@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from "react-native";
-import MoreInfo from "./MoreInfo";
+import MoreItemInfo from "./MoreItemInfo";
 
 export default class OneItem extends React.Component {
   constructor() {
@@ -34,12 +34,12 @@ export default class OneItem extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.props.item.name}</Text>
+        <Text style={styles.title}>{this.props.item.name}</Text>
         {this.state.open ? (
-          <MoreInfo item={this.state.item} onPress={this.click} />
+          <MoreItemInfo item={this.state.item} onPress={this.click} />
         ) : (
           <TouchableOpacity onPress={this.click}>
-            <Text>MORE</Text>
+            <Text>show details</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -49,7 +49,17 @@ export default class OneItem extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#DEB887",
-    alignItems: "center"
+    backgroundColor: "#CBCBC6",
+    alignItems: "center",
+    padding: 2,
+    borderColor: "#7A7A79",
+    borderWidth: 2
+  },
+  title: {
+    fontFamily: "Papyrus",
+    fontSize: 20
+  },
+  expand: {
+    fontFamily: ""
   }
 });

@@ -5,8 +5,11 @@ import {
   Image,
   Button,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity,
+  Text
 } from "react-native";
+import { NavigationActions, StackActions } from "react-navigation";
 import OneSpell from "../components/OneSpell";
 
 export default class SpellsScreen extends React.Component {
@@ -18,6 +21,7 @@ export default class SpellsScreen extends React.Component {
   }
   componentDidMount = async () => {
     try {
+      // this.reset();
       const res = await fetch("http://dnd5eapi.co/api/spells/");
       const spells = await res.json();
       this.setState({ allSpells: spells.results });
@@ -27,29 +31,55 @@ export default class SpellsScreen extends React.Component {
   };
   _saveToAsyncStorage = async obj => {
     try {
-      await AsyncStorage.setItem(`${obj.name}`, JSON.stringify(obj));
+      let req = await AsyncStorage.getItem("spells");
+      let spellsList = [];
+      if (req !== null) {
+        let spellsList = JSON.parse(req);
+        spellsList.push(obj);
+        await AsyncStorage.setItem(`spells`, JSON.stringify(spellsList));
+      } else {
+        spellsList.push(obj);
+        await AsyncStorage.setItem(`spells`, JSON.stringify(spellsList));
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
+  // reset = () => {
+  //   const resetToHome = NavigationActions.reset({
+  //     index: 0,
+  //     key: null,
+  //     actions: [NavigationActions.navigate({ routeName: "Home" })]
+  //   });
+  //   const resetAction = StackActions.reset({
+  //     index: 0,
+  //     actions: [NavigationActions.navigate({ routeName: "Spells" })]
+  //   });
+  //   console.log("reset executed");
+  //   // return this.props.navigation.dispatch(resetToHome);
+  // };
+
   render() {
     const spells = this.state.allSpells;
     return (
+      // <View>
+      //   <Button title="go home" onPress={this.reset} />
       <ScrollView title={"Spells"} style={styles.container}>
         {this.state.allSpells.length ? (
           spells.map((elem, idx) => {
             return (
               <View key={idx + 1} style={styles.oneSpell}>
                 <OneSpell spell={elem} />
-                <Button
+                <TouchableOpacity
                   onPress={() => this._saveToAsyncStorage(elem)}
                   style={styles.addButton}
-                  title="ADD +"
                 >
-                  {" "}
-                  Add +{" "}
-                </Button>
+                  <Image
+                    source={require("../assets/images/addSpell.gif")}
+                    style={styles.welcomeImage}
+                  />
+                </TouchableOpacity>
               </View>
             );
           })
@@ -60,6 +90,7 @@ export default class SpellsScreen extends React.Component {
           />
         )}
       </ScrollView>
+      // </View>
     );
   }
 }
@@ -71,23 +102,24 @@ SpellsScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    flexBasis: "auto"
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
+    width: 80,
+    height: 45,
     resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10,
-    backgroundColor: "#080808"
+
+    backgroundColor: "#CBCBC6"
   },
   addButton: {
-    width: "2vw",
-    borderStyle: "solid",
-    borderWidth: 10,
-    borderRadius: 50,
-    borderColor: "#696969",
-    backgroundColor: "#696969"
+    backgroundColor: "#CBCBC6",
+    alignItems: "center",
+    padding: 2,
+    borderColor: "#7A7A79",
+    borderWidth: 2,
+    width: 100,
+    fontSize: 20
   },
   oneSpell: {
     flexDirection: "row",

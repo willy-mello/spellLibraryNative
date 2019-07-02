@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from "react-native";
-import MoreInfo from "./MoreInfo";
+import MoreItemInfo from "./MoreItemInfo";
 
-export default class OneSpell extends React.Component {
+export default class WeaponContainer extends React.Component {
   constructor() {
     super();
     this.state = {
       open: false,
-      spell: {}
+      item: {}
     };
   }
   click = () => {
@@ -24,9 +24,9 @@ export default class OneSpell extends React.Component {
 
   componentDidMount = async () => {
     try {
-      const res = await fetch(this.props.spell.url);
-      const spell = await res.json();
-      this.setState({ spell });
+      const res = await fetch(this.props.item.url);
+      const item = await res.json();
+      this.setState({ item });
     } catch (error) {
       console.error(error);
     }
@@ -34,12 +34,12 @@ export default class OneSpell extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{this.props.spell.name}</Text>
+        <Text>{this.props.item.name}</Text>
         {this.state.open ? (
-          <MoreInfo spell={this.state.spell} onPress={this.click} />
+          <MoreItemInfo item={this.state.item} onPress={this.click} />
         ) : (
           <TouchableOpacity onPress={this.click}>
-            <Text>show details</Text>
+            <Text>MORE</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -50,12 +50,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#DEB887",
-    alignItems: "center",
-    borderColor: "brown",
-    borderWidth: 2
-  },
-  title: {
-    fontFamily: "Papyrus",
-    fontSize: 20
+    alignItems: "center"
   }
 });
