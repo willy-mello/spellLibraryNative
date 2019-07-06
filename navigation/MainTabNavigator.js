@@ -45,24 +45,24 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = "";
 
-const LinksStack = createStackNavigator(
-  {
-    Links: LinksScreen
-  },
-  config
-);
+// const LinksStack = createStackNavigator(
+//   {
+//     Links: LinksScreen
+//   },
+//   config
+// );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-    />
-  )
-};
+// LinksStack.navigationOptions = {
+//   tabBarLabel: "Links",
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+//     />
+//   )
+// };
 
-LinksStack.path = "";
+// LinksStack.path = "";
 
 // const SettingsStack = createStackNavigator(
 //   {
@@ -120,7 +120,7 @@ ItemsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  // LinksStack,
   SpellsStack,
   ItemsStack
   // SettingsStack
