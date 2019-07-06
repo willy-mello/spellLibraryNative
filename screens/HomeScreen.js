@@ -15,6 +15,7 @@ import { NavigationActions, StackActions } from "react-navigation";
 import OneSpell from "../components/OneSpell";
 import UserDeck from "../components/UserDeck";
 import UserItems from "../components/UserItems";
+import UserWallet from "../components/UserWallet";
 
 import { MonoText } from "../components/StyledText";
 
@@ -25,7 +26,9 @@ export default class HomeScreen extends React.Component {
       deck: [],
       itemOpen: false,
       spellOpen: false,
-      items: []
+      walletOpen: false,
+      items: [],
+      funds: 0
     };
     this._getSavedSpells = this._getSavedSpells.bind(this);
     this._getSavedItems = this._getSavedItems.bind(this);
@@ -39,8 +42,27 @@ export default class HomeScreen extends React.Component {
   //   console.log("reset executed on home screen");
   //   return this.props.navigation.dispatch(resetAction);
   // };
+  _armorTabLoad = () => {
+    this._showItems();
+    this._getSavedItems();
+  };
+  _showWallet = () => {
+    this.setState({ walletOpen: !this.state.walletOpen });
+  };
   _showSpells = () => this.setState({ spellOpen: !this.state.spellOpen });
   _showItems = () => this.setState({ itemOpen: !this.state.itemOpen });
+  _initializeWallet = async () => {
+    try {
+      let req = await AsyncStorage.getItem("funds");
+      if (req === null) {
+        await AsyncStorage.setItem("funds", JSON.stringify(0));
+      } else {
+        this.setState({ funds: JSON.parse(req) });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   _getSavedSpells = async () => {
     try {
       let allSpells = await AsyncStorage.getItem("spells");
@@ -76,9 +98,10 @@ export default class HomeScreen extends React.Component {
     }
   };
   _getAllPossessions = () => {
-    console.log("clciked and stugfgf");
+    console.log("all possessions called");
     this._getSavedItems();
     this._getSavedSpells();
+    this._initializeWallet();
   };
 
   componentDidMount = () => {
@@ -109,19 +132,18 @@ export default class HomeScreen extends React.Component {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={this._showSpells}>
-          <View style={styles.codeHighlightContainerSpells}>
-            <Image
-              source={require("../assets/images/ducks.gif")}
-              style={styles.welcomeImage}
-            />
-          </View>
-        </TouchableOpacity>
-
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
+          <TouchableOpacity onPress={this._showSpells}>
+            <View style={styles.codeHighlightContainerSpells}>
+              <Image
+                source={require("../assets/images/ducks.gif")}
+                style={styles.welcomeImage}
+              />
+            </View>
+          </TouchableOpacity>
           {this.state.spellOpen ? <UserDeck deck={this.state.deck} /> : null}
           {this.state.deck.length && this.state.spellOpen ? (
             <Button title="remove all spells" onPress={this._removeAllSpells} />
@@ -138,17 +160,10 @@ export default class HomeScreen extends React.Component {
 
           {this.state.itemOpen ? <UserItems items={this.state.items} /> : null}
 
-          {/* {this.state.deck.length ? (
-            this.state.deck.map((elem, idx) => {
-              return <OneSpell key={idx + 1} spell={elem} />;
-            })
-          ) : (
-            <Text>no spells</Text>
-          )} */}
           {this.state.items.length && this.state.itemOpen ? (
             <Button title="remove all items" onPress={this._removeAllItems} />
           ) : null}
-          <TouchableOpacity onPress={this._showItems}>
+          <TouchableOpacity onPress={this._showWallet}>
             <View style={styles.codeHighlightContainerMoney}>
               <Image
                 source={require("../assets/images/money.gif")}
@@ -156,6 +171,7 @@ export default class HomeScreen extends React.Component {
               />
             </View>
           </TouchableOpacity>
+          {this.state.walletOpen ? <UserWallet /> : null}
         </ScrollView>
       </View>
     );

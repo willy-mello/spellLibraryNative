@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ScrollView,
+  ListView,
   StyleSheet,
   Image,
   Button,
@@ -22,9 +23,9 @@ export default class ItemsScreen extends React.Component {
   componentDidMount = async () => {
     try {
       // this.reset();
-      const res = await fetch("http://dnd5eapi.co/api/equipment/");
+      // const res = await fetch("http://dnd5eapi.co/api/equipment/");
 
-      const items = await res.json();
+      const items = everyItem;
 
       this.setState({ allItems: items.results });
     } catch (error) {
@@ -58,9 +59,12 @@ export default class ItemsScreen extends React.Component {
             return (
               <View key={idx + 1} style={styles.oneSpell}>
                 <OneItem item={elem} />
-                <TouchableOpacity style={styles.addButton}>
+                <TouchableOpacity
+                  onPress={() => this._saveToAsyncStorage(elem)}
+                  style={styles.addButton}
+                >
                   <Image
-                    source={require("../assets/images/addSpell.gif")}
+                    source={require("../assets/images/addToInventory.png")}
                     style={styles.welcomeImage}
                   />
                 </TouchableOpacity>

@@ -5,7 +5,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Platform
 } from "react-native";
 import MoreInfo from "./MoreInfo";
 
@@ -46,6 +47,7 @@ export default class OneSpell extends React.Component {
     );
   }
 }
+const osText = Platform.OS === "ios" ? "Papyrus" : "Roboto";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     borderWidth: 2
   },
   title: {
-    fontFamily: "Papyrus",
+    fontFamily: osText,
     fontSize: 20
   }
 });

@@ -76,7 +76,7 @@ export default class SpellsScreen extends React.Component {
                   style={styles.addButton}
                 >
                   <Image
-                    source={require("../assets/images/addSpell.gif")}
+                    source={require("../assets/images/addSpellStill.png")}
                     style={styles.welcomeImage}
                   />
                 </TouchableOpacity>
