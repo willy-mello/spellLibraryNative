@@ -34,16 +34,12 @@ export default class OneSpell extends React.Component {
   };
   render() {
     return (
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={this.click}>
         <Text style={styles.title}>{this.props.spell.name}</Text>
         {this.state.open ? (
           <MoreInfo spell={this.state.spell} onPress={this.click} />
-        ) : (
-          <TouchableOpacity onPress={this.click}>
-            <Text>show details</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+        ) : null}
+      </TouchableOpacity>
     );
   }
 }
@@ -52,11 +48,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#DEB887",
-    alignItems: "center",
+    alignItems: "baseline",
     borderColor: "brown",
     borderWidth: 2
   },
   title: {
+    alignSelf: "center",
     fontFamily: osText,
     fontSize: 20
   }

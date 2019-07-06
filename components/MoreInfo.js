@@ -11,9 +11,9 @@ export default (MoreInfo = props => {
       <Text>Duration: {spell.duration}</Text>
       <Text>Material: {spell.material}</Text>
       <Text>Higher Level: {spell.higher_level}</Text>
-      <TouchableOpacity onPress={props.onPress}>
+      {/* <TouchableOpacity onPress={props.onPress}>
         <Text>hide details</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 });

@@ -22,9 +22,9 @@ export default (MoreItemInfo = props => {
           <Text>Long Range: {item.range.long}</Text>
         ) : null}
 
-        <TouchableOpacity onPress={props.onPress}>
+        {/* <TouchableOpacity onPress={props.onPress}>
           <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -44,9 +44,9 @@ export default (MoreItemInfo = props => {
           Cost: {item.cost.quantity} {item.cost.unit}
         </Text>
 
-        <TouchableOpacity onPress={props.onPress}>
+        {/* <TouchableOpacity onPress={props.onPress}>
           <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -75,9 +75,9 @@ export default (MoreItemInfo = props => {
             />
           );
         })}
-        <TouchableOpacity onPress={props.onPress}>
+        {/* <TouchableOpacity onPress={props.onPress}>
           <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -97,9 +97,9 @@ export default (MoreItemInfo = props => {
           Cost: {item.cost.quantity} {item.cost.unit}
         </Text>
         <Text>Weight: {item.weight}</Text>
-        <TouchableOpacity onPress={props.onPress}>
+        {/* <TouchableOpacity onPress={props.onPress}>
           <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -122,9 +122,9 @@ export default (MoreItemInfo = props => {
           </Text>
         ) : null}
 
-        <TouchableOpacity onPress={props.onPress}>
+        {/* <TouchableOpacity onPress={props.onPress}>
           <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }

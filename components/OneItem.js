@@ -34,16 +34,12 @@ export default class OneItem extends React.Component {
   };
   render() {
     return (
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={this.click}>
         <Text style={styles.title}>{this.props.item.name}</Text>
         {this.state.open ? (
           <MoreItemInfo item={this.state.item} onPress={this.click} />
-        ) : (
-          <TouchableOpacity onPress={this.click}>
-            <Text>show details</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+        ) : null}
+      </TouchableOpacity>
     );
   }
 }
