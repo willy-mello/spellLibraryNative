@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import EquipmentPack from "./EquipmentPack";
 
 export default (MoreItemInfo = props => {
@@ -7,7 +7,6 @@ export default (MoreItemInfo = props => {
   if (item.equipment_category === "Weapon") {
     return (
       <View>
-        {/* <Text>{item.desc[0]}</Text> */}
         <Text>Type: {item.weapon_range} weapon</Text>
 
         <Text>
@@ -21,17 +20,12 @@ export default (MoreItemInfo = props => {
         {item.range.long !== null ? (
           <Text>Long Range: {item.range.long}</Text>
         ) : null}
-
-        {/* <TouchableOpacity onPress={props.onPress}>
-          <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
   if (item.equipment_category === "Armor") {
     return (
       <View>
-        {/* <Text>{item.desc[0]}</Text> */}
         <Text>Type: {item.armor_category} armor</Text>
         <Text>Base Armor: {item.armor_class.base}</Text>
         <Text>DEX Bonus: {item.armor_class.dex_bonus ? "Yes" : "No"}</Text>
@@ -43,10 +37,6 @@ export default (MoreItemInfo = props => {
         <Text>
           Cost: {item.cost.quantity} {item.cost.unit}
         </Text>
-
-        {/* <TouchableOpacity onPress={props.onPress}>
-          <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
@@ -75,9 +65,6 @@ export default (MoreItemInfo = props => {
             />
           );
         })}
-        {/* <TouchableOpacity onPress={props.onPress}>
-          <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
@@ -97,9 +84,6 @@ export default (MoreItemInfo = props => {
           Cost: {item.cost.quantity} {item.cost.unit}
         </Text>
         <Text>Weight: {item.weight}</Text>
-        {/* <TouchableOpacity onPress={props.onPress}>
-          <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }
@@ -121,10 +105,6 @@ export default (MoreItemInfo = props => {
             Speed: {item.speed.quantity} {item.speed.unit}
           </Text>
         ) : null}
-
-        {/* <TouchableOpacity onPress={props.onPress}>
-          <Text style={styles.hideButton}>hide details</Text>
-        </TouchableOpacity> */}
       </View>
     );
   }

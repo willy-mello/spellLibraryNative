@@ -1,5 +1,3 @@
-import { isModuleDeclaration } from "@babel/types";
-
 const convertCurrencyToDenominations = num => {
   let cash = num.toString();
   let gp;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Stylesheet, Text, View, TouchableOpacity } from "react-native";
+import { Text, View } from "react-native";
 
 export default (MoreInfo = props => {
   const spell = props.spell;
@@ -11,9 +11,6 @@ export default (MoreInfo = props => {
       <Text>Duration: {spell.duration}</Text>
       <Text>Material: {spell.material}</Text>
       <Text>Higher Level: {spell.higher_level}</Text>
-      {/* <TouchableOpacity onPress={props.onPress}>
-        <Text>hide details</Text>
-      </TouchableOpacity> */}
     </View>
   );
 });

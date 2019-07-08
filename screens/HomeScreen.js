@@ -34,14 +34,7 @@ export default class HomeScreen extends React.Component {
     this._getSavedItems = this._getSavedItems.bind(this);
     this._getAllPossessions = this._getAllPossessions.bind(this);
   }
-  // reset = () => {
-  //   const resetAction = StackActions.reset({
-  //     index: 0,
-  //     actions: [NavigationActions.navigate({ routeName: "Home" })]
-  //   });
-  //   console.log("reset executed on home screen");
-  //   return this.props.navigation.dispatch(resetAction);
-  // };
+
   _armorTabLoad = () => {
     this._showItems();
     this._getSavedItems();
@@ -98,7 +91,6 @@ export default class HomeScreen extends React.Component {
     }
   };
   _getAllPossessions = () => {
-    console.log("all possessions called");
     this._getSavedItems();
     this._getSavedSpells();
     this._initializeWallet();
@@ -107,7 +99,6 @@ export default class HomeScreen extends React.Component {
   componentDidMount = () => {
     this._getAllPossessions();
   };
-  componentDidUpdate = async (newProps, prevState) => {};
 
   render() {
     return (
@@ -181,41 +172,6 @@ export default class HomeScreen extends React.Component {
 HomeScreen.navigationOptions = {
   header: null
 };
-
-// function DevelopmentModeNotice() {
-//   if (__DEV__) {
-//     const learnMoreButton = (
-//       <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-//         Learn more
-//       </Text>
-//     );
-
-//     return (
-//       <Text style={styles.developmentModeText}>
-//         Development mode is enabled: your app will be slower but you can use
-//         useful development tools. {learnMoreButton}
-//       </Text>
-//     );
-//   } else {
-//     return (
-//       <Text style={styles.developmentModeText}>
-//         You are not in development mode: your app will run at full speed.
-//       </Text>
-//     );
-//   }
-// }
-
-// function handleLearnMorePress() {
-//   WebBrowser.openBrowserAsync(
-//     "https://docs.expo.io/versions/latest/workflow/development-mode/"
-//   );
-// }
-
-// function handleHelpPress() {
-//   WebBrowser.openBrowserAsync(
-//     "https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes"
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {

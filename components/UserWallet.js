@@ -5,17 +5,11 @@ import {
   Text,
   View,
   Modal,
-  TextInput,
   TouchableOpacity,
   AsyncStorage,
   Button
 } from "react-native";
-import {
-  convertCurrencyToDenominations,
-  convertDenominationstoCurrency,
-  calculateNewBalance
-} from "../assets/utilityFunctions";
-import OneItem from "./OneItem";
+import { calculateNewBalance } from "../assets/utilityFunctions";
 import t from "tcomb-form-native";
 
 const Form = t.form.Form;

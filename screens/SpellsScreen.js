@@ -3,13 +3,11 @@ import {
   ScrollView,
   StyleSheet,
   Image,
-  Button,
   View,
   AsyncStorage,
-  TouchableOpacity,
-  Text
+  TouchableOpacity
 } from "react-native";
-import { NavigationActions, StackActions } from "react-navigation";
+
 import OneSpell from "../components/OneSpell";
 
 export default class SpellsScreen extends React.Component {

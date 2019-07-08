@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  AsyncStorage
-} from "react-native";
+import { StyleSheet, Text } from "react-native";
 import OneItem from "./OneItem";
 
 export default (UserItems = props => {

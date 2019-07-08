@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  AsyncStorage,
-  Platform
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, Platform } from "react-native";
 import MoreInfo from "./MoreInfo";
 
 export default class OneSpell extends React.Component {
