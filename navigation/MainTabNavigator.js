@@ -7,6 +7,7 @@ import {
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
+import CreateCharacterScreen from "../screens/CreateCharacterScreen";
 
 import SpellsScreen from "../screens/SpellsScreen";
 import ItemsScreen from "../screens/ItemsScreen";
@@ -38,10 +39,27 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = "";
+const CharacterStack = createStackNavigator(
+  {
+    Character: CreateCharacterScreen
+  },
+  config
+);
+
+CharacterStack.navigationOptions = {
+  tabBarLabel: "Create Character",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+    />
+  )
+};
+CharacterStack.path = "";
 
 const SpellsStack = createStackNavigator(
   {
-    Spells: SpellsScreen
+    Character: SpellsScreen
   },
   config
 );
@@ -77,6 +95,7 @@ ItemsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
+  CharacterStack,
   SpellsStack,
   ItemsStack
 });

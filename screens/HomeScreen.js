@@ -16,6 +16,7 @@ import OneSpell from "../components/OneSpell";
 import UserDeck from "../components/UserDeck";
 import UserItems from "../components/UserItems";
 import UserWallet from "../components/UserWallet";
+import CharacterInfo from "../components/CharacterInfo";
 
 import { MonoText } from "../components/StyledText";
 
@@ -27,17 +28,32 @@ export default class HomeScreen extends React.Component {
       itemOpen: false,
       spellOpen: false,
       walletOpen: false,
+      characterOpen: false,
       items: [],
-      funds: 0
+      funds: 0,
+      character: {}
     };
     this._getSavedSpells = this._getSavedSpells.bind(this);
     this._getSavedItems = this._getSavedItems.bind(this);
     this._getAllPossessions = this._getAllPossessions.bind(this);
+    this._loadCharacter = this._loadCharacter.bind(this);
   }
-
+  _loadCharacter = async () => {
+    try {
+      let req = await AsyncStorage.getItem("character");
+      if (req !== null) {
+        this.setState({ character: JSON.parse(req) });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
   _armorTabLoad = () => {
     this._showItems();
     this._getSavedItems();
+  };
+  _showCharacter = () => {
+    this.setState({ characterOpen: !this.state.characterOpen });
   };
   _showWallet = () => {
     this.setState({ walletOpen: !this.state.walletOpen });
@@ -94,6 +110,7 @@ export default class HomeScreen extends React.Component {
     this._getSavedItems();
     this._getSavedSpells();
     this._initializeWallet();
+    this._loadCharacter();
   };
 
   componentDidMount = () => {
@@ -127,6 +144,18 @@ export default class HomeScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
+          <TouchableOpacity onPress={this._showCharacter}>
+            <View style={styles.codeHighlightCharacter}>
+              <Image
+                source={require("../assets/images/addSpell.gif")}
+                style={styles.welcomeImage}
+              />
+            </View>
+          </TouchableOpacity>
+          {this.state.characterOpen ? (
+            <CharacterInfo character={this.state.character} />
+          ) : null}
+
           <TouchableOpacity onPress={this._showSpells}>
             <View style={styles.codeHighlightContainerSpells}>
               <Image
@@ -226,6 +255,13 @@ const styles = StyleSheet.create({
   },
   codeHighlightContainerMoney: {
     backgroundColor: "#D5D5D1",
+    borderRadius: 0,
+    paddingHorizontal: 4,
+    flexDirection: "row",
+    justifyContent: "space-evenly"
+  },
+  codeHighlightCharacter: {
+    backgroundColor: "#2C2C2B",
     borderRadius: 0,
     paddingHorizontal: 4,
     flexDirection: "row",
