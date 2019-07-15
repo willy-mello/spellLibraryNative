@@ -168,8 +168,7 @@ export default class CreateCharacterScreen extends React.Component {
   _deleteCurrentCharacter = async () => {
     await AsyncStorage.removeItem("character");
     this.setState({
-      allClasses: [],
-      allRaces: [],
+      ...this.state,
       newChar: {
         stats: {
           str: 0,

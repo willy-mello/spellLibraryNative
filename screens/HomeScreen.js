@@ -37,6 +37,8 @@ export default class HomeScreen extends React.Component {
     this._getSavedItems = this._getSavedItems.bind(this);
     this._getAllPossessions = this._getAllPossessions.bind(this);
     this._loadCharacter = this._loadCharacter.bind(this);
+    this._manipulateCharacterStats = this._manipulateCharacterStats.bind(this);
+    this._changeHP = this._changeHP.bind(this);
   }
   _loadCharacter = async () => {
     try {
@@ -112,6 +114,53 @@ export default class HomeScreen extends React.Component {
     this._initializeWallet();
     this._loadCharacter();
   };
+  _changeHP = str => {
+    if (str === "+") {
+      console.log("got to set state");
+      this.setState({
+        ...this.state,
+        character: {
+          ...this.state.character,
+          HP: Number(this.state.character.HP + 1)
+        }
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        character: {
+          ...this.state.character,
+          HP: Number(this.state.character.HP - 1)
+        }
+      });
+    }
+  };
+  _manipulateCharacterStats(stat, str) {
+    console.log("manipulate character clicked");
+    if (str === "+") {
+      console.log("got to set state");
+      this.setState({
+        ...this.state,
+        character: {
+          ...this.state.character,
+          stats: {
+            ...this.state.character.stats,
+            [stat]: this.state.character.stats[stat] + 1
+          }
+        }
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        character: {
+          ...this.state.character,
+          stats: {
+            ...this.state.character.stats,
+            [stat]: this.state.character.stats[stat] - 1
+          }
+        }
+      });
+    }
+  }
 
   componentDidMount = () => {
     this._getAllPossessions();
@@ -153,7 +202,11 @@ export default class HomeScreen extends React.Component {
             </View>
           </TouchableOpacity>
           {this.state.characterOpen ? (
-            <CharacterInfo character={this.state.character} />
+            <CharacterInfo
+              handlePress={this._manipulateCharacterStats}
+              character={this.state.character}
+              changeHP={this._changeHP}
+            />
           ) : null}
 
           <TouchableOpacity onPress={this._showSpells}>

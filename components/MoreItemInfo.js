@@ -7,7 +7,9 @@ export default (MoreItemInfo = props => {
   if (item.equipment_category === "Weapon") {
     return (
       <View>
-        <Text>Type: {item.weapon_range} weapon</Text>
+        <Text>
+          Type: {item.weapon_category} {item.weapon_range}
+        </Text>
 
         <Text>
           Cost: {item.cost.quantity} {item.cost.unit}

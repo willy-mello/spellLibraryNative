@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import OneSpell from "./OneSpell";
 
 export default (CharacterInfo = props => {
@@ -11,29 +11,115 @@ export default (CharacterInfo = props => {
         {character.name}, the {character.background}, {character.subrace},{" "}
         {character.class} {character.race}
       </Text>
-      <Text>
-        STR: {character.stats.str} `(+{character.asi.str})`
-      </Text>
-      <Text>
-        DEX: {character.stats.dex} `(+{character.asi.dex})`
-      </Text>
-      <Text>
-        INT: {character.stats.int} `(+{character.asi.int})`
-      </Text>
-      <Text>
-        WIS: {character.stats.wis} `(+{character.asi.wis})`
-      </Text>
-      <Text>
-        CON: {character.stats.con} `(+{character.asi.con})`
-      </Text>
-      <Text>
-        CMA: {character.stats.cma} `(+{character.asi.cma})`
-      </Text>
+      <View style={styles.statsContainer}>
+        <Text>
+          STR: {character.stats.str} (+{character.asi.str})
+        </Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.handlePress("str", "-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.handlePress("str", "+")}
+        />
+      </View>
+      <View style={styles.statsContainer}>
+        <Text>
+          DEX: {character.stats.dex} (+{character.asi.dex})
+        </Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.handlePress("dex", "-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.handlePress("dex", "+")}
+        />
+      </View>
+      <View style={styles.statsContainer}>
+        <Text>
+          INT: {character.stats.int} (+{character.asi.int})
+        </Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.handlePress("int", "-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.handlePress("int", "+")}
+        />
+      </View>
+      <View style={styles.statsContainer}>
+        <Text>
+          WIS: {character.stats.wis} (+{character.asi.wis})
+        </Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.handlePress("wis", "-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.handlePress("wis", "+")}
+        />
+      </View>
+      <View style={styles.statsContainer}>
+        <Text>
+          CON: {character.stats.con} (+{character.asi.con})
+        </Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.handlePress("con", "-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.handlePress("con", "+")}
+        />
+      </View>
+      <View style={styles.statsContainer}>
+        <Text>
+          CMA: {character.stats.cma} (+{character.asi.cma})
+        </Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.handlePress("cma", "-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.handlePress("cma", "+")}
+        />
+      </View>
+
       <Text>Skills: {character.skills}</Text>
-      <Text>HP:{character.HP}</Text>
+
+      <View style={styles.statsContainer}>
+        <Text>HP:{character.HP}</Text>
+        <Button
+          style={{ padding: 0 }}
+          title="-"
+          onPress={() => props.changeHP("-")}
+        />
+        <Button
+          style={{ padding: 0 }}
+          title="+"
+          onPress={() => props.changeHP("+")}
+        />
+      </View>
     </View>
   ) : (
-    <Text>go make a character</Text>
+    <Text>Want to make a character?</Text>
   );
 });
 
@@ -42,5 +128,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#DEB887",
     alignItems: "center"
+  },
+  statsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    fontSize: 20,
+    justifyContent: "space-between"
   }
 });
