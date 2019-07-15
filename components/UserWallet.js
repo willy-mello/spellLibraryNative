@@ -23,7 +23,8 @@ export default class UserWallet extends React.Component {
   constructor() {
     super();
     this.state = {
-      funds: 0,
+      funds: { gp: 0, sp: 0, cp: 0, total: 0 },
+
       modalOpen: false,
       balAlert: "",
       newWithdrawal: false,
@@ -49,7 +50,7 @@ export default class UserWallet extends React.Component {
   _handleBankWithdrawal = () => {
     const value = this._form.getValue();
     const newBal = calculateNewBalance(
-      this.state.funds,
+      this.state.funds.total,
       [value.gold, value.silver, value.copper],
       "w"
     );
@@ -63,7 +64,12 @@ export default class UserWallet extends React.Component {
       return null;
     }
 
-    this._setFunds(newBal);
+    this._setFunds({
+      gp: Number(this.state.funds.gp - value.gold),
+      sp: Number(this.state.funds.sp - value.silver),
+      cp: Number(this.state.funds.cp - value.copper),
+      total: newBal
+    });
     this._toggleWithdrawal();
 
     console.log("handlBalance called", value);
@@ -72,21 +78,29 @@ export default class UserWallet extends React.Component {
     const value = this._form.getValue();
     console.log("value.gold", value);
     const newBal = calculateNewBalance(
-      this.state.funds,
+      this.state.funds.total,
       [value.gold, value.silver, value.copper],
       "d"
     );
-    this._setFunds(newBal);
+    this._setFunds({
+      gp: Number(value.gold + this.state.funds.gp),
+      sp: Number(value.silver + this.state.funds.sp),
+      cp: Number(value.copper + this.state.funds.cp),
+      total: newBal
+    });
     this._toggleDeposit();
   };
   _resetFunds = async () => {
-    await AsyncStorage.setItem("funds", JSON.stringify(0));
-    this.setState({ funds: 0 });
+    await AsyncStorage.setItem(
+      "funds",
+      JSON.stringify({ gp: 0, sp: 0, cp: 0, total: 0 })
+    );
+    this.setState({ funds: { gp: 0, sp: 0, cp: 0, total: 0 } });
   };
 
   _getFunds = async () => {
     let req = await AsyncStorage.getItem("funds");
-    this.setState({ funds: JSON.parse(req) });
+    req === null ? null : this.setState({ funds: JSON.parse(req) });
   };
   _setFunds = async newBal => {
     try {
@@ -104,8 +118,12 @@ export default class UserWallet extends React.Component {
       return (
         <View style={styles.form}>
           <Text style={styles.totalCash}>
+            {this.state.funds.gp} gp || {this.state.funds.sp} sp ||{" "}
+            {this.state.funds.cp} cp
+          </Text>
+          <Text style={styles.totalCash}>
             {" "}
-            Total Cash: {this.state.funds} cp
+            Total Cash: {this.state.funds.total} cp
           </Text>
 
           <Form
@@ -121,8 +139,12 @@ export default class UserWallet extends React.Component {
       return (
         <View style={styles.form}>
           <Text style={styles.totalCash}>
+            {this.state.funds.gp} gp || {this.state.funds.sp} sp ||{" "}
+            {this.state.funds.cp} cp
+          </Text>
+          <Text style={styles.totalCash}>
             {" "}
-            Total Cash: {this.state.funds} cp
+            Total Cash: {this.state.funds.total} cp
           </Text>
           <Form
             ref={c => (this._form = c)}
@@ -138,7 +160,14 @@ export default class UserWallet extends React.Component {
     }
     return (
       <View style={styles.form}>
-        <Text style={styles.totalCash}> Total Cash: {this.state.funds} cp</Text>
+        <Text style={styles.totalCash}>
+          {this.state.funds.gp} gp || {this.state.funds.sp} sp ||{" "}
+          {this.state.funds.cp} cp
+        </Text>
+        <Text style={styles.totalCash}>
+          {" "}
+          Total Cash: {this.state.funds.total} cp
+        </Text>
         <Modal
           animationType="none"
           transparent={false}
