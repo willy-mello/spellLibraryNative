@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import OneItem from "../components/OneItem";
+import Pack from "../components/Pack";
 import everyItem from "../assets/data/items.json";
 
 export default class ItemsScreen extends React.Component {
@@ -19,6 +20,7 @@ export default class ItemsScreen extends React.Component {
     this.state = {
       allItems: []
     };
+    this.checkStoredItems = this.checkStoredItems.bind(this);
   }
   componentDidMount = async () => {
     try {
@@ -32,16 +34,61 @@ export default class ItemsScreen extends React.Component {
       console.error(error);
     }
   };
-
+  checkStoredItems = (objToStore, itemArray, num = 1) => {
+    //filter itemArray to check for a matching name
+    //if returned filter array.length===1,
+    //map the initial array and increment the quantity
+    //else, add quantity:1 kv pair to objToStore and push it to item array
+    //return itemArray
+    let name = objToStore.name;
+    let exists = itemArray.filter(elem => {
+      return elem.name === name;
+    });
+    if (exists.length === 1) {
+      return itemArray.map(elem => {
+        if (elem.name === name) {
+          elem.quantity += num;
+          return elem;
+        }
+        return elem;
+      });
+    }
+    objToStore.quantity = num;
+    itemArray.push(objToStore);
+    return itemArray;
+  };
+  _savePack = async pack => {
+    const packArray = [];
+    try {
+      let req = await fetch(pack.url);
+      let listOfUrls = await req.json();
+      let listOfItems = await listOfUrls.map(async elem => {
+        let item = await fetch(elem.url);
+        item.quantity = elem.quantity;
+        return item;
+      });
+      await listOfItems.forEach(elem => {
+        this._saveToAsyncStorage(elem);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   _saveToAsyncStorage = async obj => {
     try {
+      //need to have async item storage be an object with quantity
+      //[{name:'str',url:'str',quantity:integer},{name:'str2',url:'str2',quantity:integer2}]
+      //need to check if any stored item has the same name as obj arg.
+      //if true, increment that stored item, if false, add quantity:1 kv pair to obj arg and push to items arr
+
       let req = await AsyncStorage.getItem("items");
       let itemsList = [];
       if (req !== null) {
-        let itemsList = JSON.parse(req);
-        itemsList.push(obj);
+        let itemsList = this.checkStoredItems(obj, JSON.parse(req));
+
         await AsyncStorage.setItem(`items`, JSON.stringify(itemsList));
       } else {
+        obj.quantity = 1;
         itemsList.push(obj);
         await AsyncStorage.setItem(`items`, JSON.stringify(itemsList));
       }
@@ -56,7 +103,20 @@ export default class ItemsScreen extends React.Component {
       <ScrollView style={styles.container}>
         {this.state.allItems.length ? (
           items.map((elem, idx) => {
-            return (
+            return elem.name.slice(-7).toLowerCase() === "'s pack" ? (
+              <View key={idx + 1} style={styles.oneSpell}>
+                <Pack pack={elem} />
+                <TouchableOpacity
+                  // onPress={() => this._savePack(elem)}
+                  style={styles.addButton}
+                >
+                  <Image
+                    source={require("../assets/images/addToInventory.png")}
+                    style={styles.welcomeImage}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : (
               <View key={idx + 1} style={styles.oneSpell}>
                 <OneItem item={elem} />
                 <TouchableOpacity
