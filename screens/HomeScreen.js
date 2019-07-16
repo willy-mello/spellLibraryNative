@@ -18,8 +18,6 @@ import UserItems from "../components/UserItems";
 import UserWallet from "../components/UserWallet";
 import CharacterInfo from "../components/CharacterInfo";
 
-import { MonoText } from "../components/StyledText";
-
 export default class HomeScreen extends React.Component {
   constructor() {
     super();
@@ -40,7 +38,28 @@ export default class HomeScreen extends React.Component {
     this._manipulateCharacterStats = this._manipulateCharacterStats.bind(this);
     this._changeHP = this._changeHP.bind(this);
     this.logItems = this.logItems.bind(this);
+    this._decrementOrRemoveItem = this._decrementOrRemoveItem.bind(this);
   }
+  _decrementOrRemoveItem = async obj => {
+    try {
+      let req = await AsyncStorage.getItem("items");
+      let allStoredItems = JSON.parse(req);
+      let newInventory = allStoredItems
+        .map(elem => {
+          if (obj.name === elem.name) {
+            elem.quantity -= 1;
+          }
+          return elem;
+        })
+        .filter(elem => {
+          return elem.quantity > 0;
+        });
+      await AsyncStorage.setItem("items", JSON.stringify(newInventory));
+      this.setState({ items: newInventory });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   _loadCharacter = async () => {
     try {
       let req = await AsyncStorage.getItem("character");
@@ -235,7 +254,12 @@ export default class HomeScreen extends React.Component {
             </View>
           </TouchableOpacity>
 
-          {this.state.itemOpen ? <UserItems items={this.state.items} /> : null}
+          {this.state.itemOpen ? (
+            <UserItems
+              decrement={this._decrementOrRemoveItem}
+              items={this.state.items}
+            />
+          ) : null}
 
           {this.state.items.length && this.state.itemOpen ? (
             <Button title="remove all items" onPress={this._removeAllItems} />
