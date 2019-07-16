@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   Platform,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  View
 } from "react-native";
 
 import PackItem from "../components/PackItem";
@@ -102,12 +103,14 @@ export default class Pack extends React.Component {
   render() {
     return (
       <TouchableOpacity style={styles.container} onPress={this.click}>
-        <Text style={styles.title}>{this.props.pack.name}</Text>
-        {this.state.open
-          ? this.state.pack.contents.map(elem => {
-              return <PackItem item={elem} />;
-            })
-          : null}
+        <View>
+          <Text style={styles.title}>{this.props.pack.name}</Text>
+          {this.state.open
+            ? this.state.pack.contents.map(elem => {
+                return <PackItem item={elem} />;
+              })
+            : null}
+        </View>
 
         <TouchableOpacity
           onPress={() => this.savePack(this.state.pack.contents)}
@@ -130,7 +133,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 2,
     borderColor: "#7A7A79",
-    borderWidth: 2
+    borderWidth: 2,
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   title: {
     fontFamily: osText,

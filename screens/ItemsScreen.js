@@ -106,7 +106,7 @@ export default class ItemsScreen extends React.Component {
             return elem.name.slice(-7).toLowerCase() === "'s pack" ? (
               <View key={idx + 1} style={styles.oneSpell}>
                 <Pack pack={elem} />
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   // onPress={() => this._savePack(elem)}
                   style={styles.addButton}
                 >
@@ -114,7 +114,7 @@ export default class ItemsScreen extends React.Component {
                     source={require("../assets/images/addToInventory.png")}
                     style={styles.welcomeImage}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             ) : (
               <View key={idx + 1} style={styles.oneSpell}>
