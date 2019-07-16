@@ -39,6 +39,7 @@ export default class HomeScreen extends React.Component {
     this._loadCharacter = this._loadCharacter.bind(this);
     this._manipulateCharacterStats = this._manipulateCharacterStats.bind(this);
     this._changeHP = this._changeHP.bind(this);
+    this.logItems = this.logItems.bind(this);
   }
   _loadCharacter = async () => {
     try {
@@ -50,6 +51,9 @@ export default class HomeScreen extends React.Component {
       console.error(error);
     }
   };
+  logItems() {
+    console.log(this.state.items, "itemsin logitmes");
+  }
   _armorTabLoad = () => {
     this._showItems();
     this._getSavedItems();
