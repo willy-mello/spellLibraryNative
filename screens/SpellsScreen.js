@@ -5,7 +5,10 @@ import {
   Image,
   View,
   AsyncStorage,
-  TouchableOpacity
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Button
 } from "react-native";
 
 import OneSpell from "../components/OneSpell";
@@ -14,8 +17,11 @@ export default class SpellsScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      allSpells: []
+      allSpells: [],
+      searchTerm: ""
     };
+    this.handlePress = this.handlePress.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
   componentDidMount = async () => {
     try {
@@ -27,6 +33,15 @@ export default class SpellsScreen extends React.Component {
       console.error(error);
     }
   };
+  handlePress(e) {
+    e.preventDefault();
+
+    let searchTerm = e.nativeEvent.text;
+    this.setState({ searchTerm });
+  }
+  handleClear() {
+    this.setState({ searchTerm: "" });
+  }
   _saveToAsyncStorage = async obj => {
     try {
       let req = await AsyncStorage.getItem("spells");
@@ -59,36 +74,57 @@ export default class SpellsScreen extends React.Component {
   // };
 
   render() {
-    const spells = this.state.allSpells;
+    const spells = this.state.allSpells.slice(0).filter(elem => {
+      return elem.name
+        .toLowerCase()
+        .includes(this.state.searchTerm.toLowerCase());
+    });
     return (
-      // <View>
-      //   <Button title="go home" onPress={this.reset} />
-      <ScrollView title={"Spells"} style={styles.container}>
+      <View style={styles.container2}>
         {this.state.allSpells.length ? (
-          spells.map((elem, idx) => {
-            return (
-              <View key={idx + 1} style={styles.oneSpell}>
-                <OneSpell spell={elem} />
-                <TouchableOpacity
-                  onPress={() => this._saveToAsyncStorage(elem)}
-                  style={styles.addButton}
-                >
-                  <Image
-                    source={require("../assets/images/addSpellStill.png")}
-                    style={styles.welcomeImage}
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          })
-        ) : (
-          <Image
-            source={require("../assets/images/armour.gif")}
-            style={styles.welcomeImage}
-          />
-        )}
-      </ScrollView>
-      // </View>
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Text>Search:</Text>
+            <TextInput
+              style={{
+                flex: 2,
+                borderWidth: 1,
+                borderColor: "black",
+                borderStyle: "solid"
+              }}
+              defaultValue=""
+              title="search"
+              onChange={text => this.handlePress(text)}
+              value={this.state.searchTerm}
+            />
+            <Button onPress={this.handleClear} title="clear" />
+          </View>
+        ) : null}
+        <ScrollView title={"Spells"} style={styles.container}>
+          {this.state.allSpells.length ? (
+            spells.map((elem, idx) => {
+              return (
+                <View key={idx + 1} style={styles.oneSpell}>
+                  <OneSpell spell={elem} />
+                  <TouchableOpacity
+                    onPress={() => this._saveToAsyncStorage(elem)}
+                    style={styles.addButton}
+                  >
+                    <Image
+                      source={require("../assets/images/addSpellStill.png")}
+                      style={styles.welcomeImage}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            })
+          ) : (
+            <Image
+              source={require("../assets/images/armour.gif")}
+              style={styles.welcomeImage}
+            />
+          )}
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -122,5 +158,10 @@ const styles = StyleSheet.create({
   oneSpell: {
     flexDirection: "row",
     backgroundColor: "#DEB887"
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column"
   }
 });
