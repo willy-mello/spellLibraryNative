@@ -7,7 +7,9 @@ import {
   Button,
   View,
   AsyncStorage,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput,
+  Text
 } from "react-native";
 import { NavigationActions, StackActions } from "react-navigation";
 import OneItem from "../components/OneItem";
@@ -18,9 +20,12 @@ export default class ItemsScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      allItems: []
+      allItems: [],
+      searchTerm: ""
     };
     this.checkStoredItems = this.checkStoredItems.bind(this);
+    this.handlePress = this.handlePress.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
   componentDidMount = async () => {
     try {
@@ -34,6 +39,15 @@ export default class ItemsScreen extends React.Component {
       console.error(error);
     }
   };
+  handlePress(e) {
+    e.preventDefault();
+
+    let searchTerm = e.nativeEvent.text;
+    this.setState({ searchTerm });
+  }
+  handleClear() {
+    this.setState({ searchTerm: "" });
+  }
   checkStoredItems = (objToStore, itemArray, num = 1) => {
     //filter itemArray to check for a matching name
     //if returned filter array.length===1,
@@ -98,15 +112,39 @@ export default class ItemsScreen extends React.Component {
   };
 
   render() {
-    const items = this.state.allItems;
+    const items = this.state.allItems.slice(0).filter(elem => {
+      return elem.name
+        .toLowerCase()
+        .includes(this.state.searchTerm.toLowerCase());
+    });
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container2}>
         {this.state.allItems.length ? (
-          items.map((elem, idx) => {
-            return elem.name.slice(-7).toLowerCase() === "'s pack" ? (
-              <View key={idx + 1} style={styles.oneSpell}>
-                <Pack pack={elem} />
-                {/* <TouchableOpacity
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Text>Search:</Text>
+            <TextInput
+              style={{
+                flex: 2,
+                borderWidth: 1,
+                borderColor: "black",
+                borderStyle: "solid"
+              }}
+              defaultValue=""
+              title="search"
+              onChange={text => this.handlePress(text)}
+              value={this.state.searchTerm}
+            />
+            <Button onPress={this.handleClear} title="clear" />
+          </View>
+        ) : null}
+
+        <ScrollView style={styles.container}>
+          {this.state.allItems.length ? (
+            items.map((elem, idx) => {
+              return elem.name.slice(-7).toLowerCase() === "'s pack" ? (
+                <View key={idx + 1} style={styles.oneSpell}>
+                  <Pack pack={elem} />
+                  {/* <TouchableOpacity
                   // onPress={() => this._savePack(elem)}
                   style={styles.addButton}
                 >
@@ -115,29 +153,30 @@ export default class ItemsScreen extends React.Component {
                     style={styles.welcomeImage}
                   />
                 </TouchableOpacity> */}
-              </View>
-            ) : (
-              <View key={idx + 1} style={styles.oneSpell}>
-                <OneItem item={elem} />
-                <TouchableOpacity
-                  onPress={() => this._saveToAsyncStorage(elem)}
-                  style={styles.addButton}
-                >
-                  <Image
-                    source={require("../assets/images/addToInventory.png")}
-                    style={styles.welcomeImage}
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          })
-        ) : (
-          <Image
-            source={require("../assets/images/armour.gif")}
-            style={styles.welcomeImage}
-          />
-        )}
-      </ScrollView>
+                </View>
+              ) : (
+                <View key={idx + 1} style={styles.oneSpell}>
+                  <OneItem item={elem} />
+                  <TouchableOpacity
+                    onPress={() => this._saveToAsyncStorage(elem)}
+                    style={styles.addButton}
+                  >
+                    <Image
+                      source={require("../assets/images/addToInventory.png")}
+                      style={styles.welcomeImage}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            })
+          ) : (
+            <Image
+              source={require("../assets/images/armour.gif")}
+              style={styles.welcomeImage}
+            />
+          )}
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -150,6 +189,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff"
+  },
+  container2: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column"
   },
   welcomeImage: {
     width: 80,
