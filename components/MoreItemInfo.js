@@ -40,9 +40,10 @@ export default (MoreItemInfo = props => {
       </View>
     );
   }
+
   if (
-    item.equipment_category === "Adventuring Gear" &&
-    item.gear_category === "Equipment Pack"
+    item.equipment_category === "Adventuring Gear" ||
+    item.equipment_category === "Tools"
   ) {
     return (
       <View>
@@ -55,23 +56,11 @@ export default (MoreItemInfo = props => {
         <Text>
           Cost: {item.cost.quantity} {item.cost.unit}
         </Text>
-        {item.contents.map((elem, idx) => {
-          console.log(elem, "item contents");
-          return (
-            <EquipmentPack
-              key={idx + 1}
-              url={elem.item_url}
-              quantity={elem.quantity}
-            />
-          );
-        })}
+        <Text>Weight: {item.weight}</Text>
       </View>
     );
   }
-  if (
-    item.equipment_category === "Adventuring Gear" ||
-    item.equipment_category === "Tools"
-  ) {
+  if (item.gear_category === "Standard Gear" || item.gear_category === "Kit") {
     return (
       <View>
         {item.desc
@@ -108,6 +97,11 @@ export default (MoreItemInfo = props => {
       </View>
     );
   }
+  return (
+    <View>
+      <Text>No Interwebs, contact your Dungeon Meister</Text>
+    </View>
+  );
 });
 const styles = StyleSheet.create({
   hideButton: {

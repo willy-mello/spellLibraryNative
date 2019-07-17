@@ -13,7 +13,8 @@ export default (CharacterInfo = props => {
       </Text>
       <View style={styles.statsContainer}>
         <Text>
-          STR: {character.stats.str} (+{character.asi.str})
+          STR: {character.stats.str} (+
+          {Math.floor((character.stats.str - 10) / 2)})
         </Text>
         <Button
           style={{ padding: 0 }}
@@ -28,7 +29,8 @@ export default (CharacterInfo = props => {
       </View>
       <View style={styles.statsContainer}>
         <Text>
-          DEX: {character.stats.dex} (+{character.asi.dex})
+          DEX: {character.stats.dex} (+
+          {Math.floor((character.stats.dex - 10) / 2)})
         </Text>
         <Button
           style={{ padding: 0 }}
@@ -43,7 +45,8 @@ export default (CharacterInfo = props => {
       </View>
       <View style={styles.statsContainer}>
         <Text>
-          INT: {character.stats.int} (+{character.asi.int})
+          INT: {character.stats.int} (+
+          {Math.floor((character.stats.int - 10) / 2)})
         </Text>
         <Button
           style={{ padding: 0 }}
@@ -58,7 +61,8 @@ export default (CharacterInfo = props => {
       </View>
       <View style={styles.statsContainer}>
         <Text>
-          WIS: {character.stats.wis} (+{character.asi.wis})
+          WIS: {character.stats.wis} (+
+          {Math.floor((character.stats.wis - 10) / 2)})
         </Text>
         <Button
           style={{ padding: 0 }}
@@ -73,7 +77,8 @@ export default (CharacterInfo = props => {
       </View>
       <View style={styles.statsContainer}>
         <Text>
-          CON: {character.stats.con} (+{character.asi.con})
+          CON: {character.stats.con} (+
+          {Math.floor((character.stats.con - 10) / 2)})
         </Text>
         <Button
           style={{ padding: 0 }}

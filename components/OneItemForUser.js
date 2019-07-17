@@ -8,7 +8,7 @@ import {
   Image
 } from "react-native";
 import MoreItemInfo from "./MoreItemInfo";
-
+import OneItem from "./OneItem";
 export default class OneItemForUser extends React.Component {
   constructor(props) {
     super(props);
@@ -22,14 +22,25 @@ export default class OneItemForUser extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
-  componentDidMount = async () => {};
+  componentDidMount = async () => {
+    try {
+      console.log("this.props", this.props.item.url);
+      let res = await fetch(this.props.item.url);
+      let item = await res.json();
+      this.setState({ item });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   render() {
+    console.log("this.state", this.state);
     return (
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity style={styles.container} onPress={this.click}>
           <Text style={styles.title}>
             {this.props.item.quantity} X {this.props.item.name}
           </Text>
+
           {this.state.open ? (
             <MoreItemInfo item={this.state.item} onPress={this.click} />
           ) : null}

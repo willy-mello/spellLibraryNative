@@ -111,12 +111,12 @@ export default class CreateCharacterScreen extends React.Component {
       ...this.state,
       newChar: {
         stats: {
-          str: stats.BASE_STR,
-          dex: stats.BASE_DEX,
-          wis: stats.BASE_WIS,
-          int: stats.BASE_INT,
-          con: stats.BASE_CON,
-          cma: stats.BASE_CMA
+          str: stats.BASE_STR + stats.STR_MOD,
+          dex: stats.BASE_DEX + stats.DEX_MOD,
+          wis: stats.BASE_WIS + stats.WIS_MOD,
+          int: stats.BASE_INT + stats.INT_MOD,
+          con: stats.BASE_CON + stats.CON_MOD,
+          cma: stats.BASE_CMA + stats.CMA_MOD
         },
         asi: {
           str: stats.STR_MOD,
@@ -139,12 +139,12 @@ export default class CreateCharacterScreen extends React.Component {
     });
     this._saveToAsyncStorage({
       stats: {
-        str: stats.BASE_STR,
-        dex: stats.BASE_DEX,
-        wis: stats.BASE_WIS,
-        int: stats.BASE_INT,
-        con: stats.BASE_CON,
-        cma: stats.BASE_CMA
+        str: stats.BASE_STR + stats.STR_MOD,
+        dex: stats.BASE_DEX + stats.DEX_MOD,
+        wis: stats.BASE_WIS + stats.WIS_MOD,
+        int: stats.BASE_INT + stats.INT_MOD,
+        con: stats.BASE_CON + stats.CON_MOD,
+        cma: stats.BASE_CMA + stats.CMA_MOD
       },
       asi: {
         str: stats.STR_MOD,
