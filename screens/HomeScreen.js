@@ -303,6 +303,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20
   },
+  welcomeContainer: {
+    alignItems: "center",
+    marginTop: 0,
+    marginBottom: 0
+  },
   welcomeImage: {
     width: 100,
     height: 80,
