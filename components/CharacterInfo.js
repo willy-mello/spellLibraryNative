@@ -93,7 +93,8 @@ export default (CharacterInfo = props => {
       </View>
       <View style={styles.statsContainer}>
         <Text>
-          CMA: {character.stats.cma} (+{character.asi.cma})
+          CMA: {character.stats.cma} (+
+          {Math.floor((character.stats.cma - 10) / 2)})
         </Text>
         <Button
           style={{ padding: 0 }}

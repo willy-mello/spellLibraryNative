@@ -137,33 +137,7 @@ export default class CreateCharacterScreen extends React.Component {
         Age: stats.Age
       }
     });
-    this._saveToAsyncStorage({
-      stats: {
-        str: stats.BASE_STR + stats.STR_MOD,
-        dex: stats.BASE_DEX + stats.DEX_MOD,
-        wis: stats.BASE_WIS + stats.WIS_MOD,
-        int: stats.BASE_INT + stats.INT_MOD,
-        con: stats.BASE_CON + stats.CON_MOD,
-        cma: stats.BASE_CMA + stats.CMA_MOD
-      },
-      asi: {
-        str: stats.STR_MOD,
-        dex: stats.DEX_MOD,
-        wis: stats.WIS_MOD,
-        int: stats.INT_MOD,
-        con: stats.CON_MOD,
-        cma: stats.CMA_MOD
-      },
-      name: stats.Name,
-      race: stats.Race,
-      class: stats.Class,
-      subrace: stats.Subrace,
-      background: stats.Background,
-      skills: stats.Skills,
-      HP: stats.HP,
-      Level: stats.Level,
-      Age: stats.Age
-    });
+    this._saveToAsyncStorage(this.state.newChar);
   }
   _deleteCurrentCharacter = async () => {
     await AsyncStorage.removeItem("character");
