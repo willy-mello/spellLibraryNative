@@ -261,9 +261,9 @@ export default class HomeScreen extends React.Component {
             />
           ) : null}
 
-          {this.state.items.length && this.state.itemOpen ? (
+          {/* {this.state.items.length && this.state.itemOpen ? (
             <Button title="remove all items" onPress={this._removeAllItems} />
-          ) : null}
+          ) : null} */}
           <TouchableOpacity onPress={this._showWallet}>
             <View style={styles.codeHighlightContainerMoney}>
               <Image

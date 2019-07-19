@@ -63,11 +63,16 @@ export default class UserWallet extends React.Component {
       });
       return null;
     }
+    let gp = this.state.funds.gp - value.gold;
+    let sp = this.state.funds.sp - value.silver;
+    let cp = this.state.funds.cp - value.copper;
+    if (gp < 0) {
+    }
 
     this._setFunds({
-      gp: Number(this.state.funds.gp - value.gold),
-      sp: Number(this.state.funds.sp - value.silver),
-      cp: Number(this.state.funds.cp - value.copper),
+      gp,
+      sp,
+      cp,
       total: newBal
     });
     this._toggleWithdrawal();
